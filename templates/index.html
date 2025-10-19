@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Cuenta regresiva para Navidad{% endblock %}
+
+{% block body %}
+<main class="container">
+  <section class="card">
+    <h1>Cuenta regresiva para Navidad 🎄</h1>
+    <p class="sub">
+      Faltan <strong id="days">{{ days }}</strong> días,
+      <strong id="hours">{{ hours }}</strong> horas,
+      <strong id="minutes">{{ minutes }}</strong> minutos y
+      <strong id="seconds">{{ seconds }}</strong> segundos.
+    </p>
+
+    <div class="grid">
+      <div class="tile">
+        <div class="num" id="d">{{ days }}</div>
+        <div class="label">Días</div>
+      </div>
+      <div class="tile">
+        <div class="num" id="h">{{ hours }}</div>
+        <div class="label">Horas</div>
+      </div>
+      <div class="tile">
+        <div class="num" id="m">{{ minutes }}</div>
+        <div class="label">Minutos</div>
+      </div>
+      <div class="tile">
+        <div class="num" id="s">{{ seconds }}</div>
+        <div class="label">Segundos</div>
+      </div>
+    </div>
+
+    <p class="muted">
+      Objetivo: 25 de diciembre de {{ year }} (00:00).<br/>
+      Zona horaria del servidor: <span class="pill">{{ tz_name }}</span> · Hoy: <span class="pill">{{ today_str }}</span> ·
+      <span class="pill" id="client-tz">Tu zona horaria: detectando…</span>
+    </p>
+
+    <p class="celebrate" id="celebrate" hidden>🎁 ¡Feliz Navidad! 🎅</p>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/countdown.js') }}"></script>
+{% endblock %}
