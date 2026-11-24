@@ -8,14 +8,13 @@ app = Flask(__name__)
 # Zona horaria del servidor (puedes cambiarla con APP_TIMEZONE)
 DEFAULT_TZ = os.getenv("APP_TIMEZONE", "America/Santiago")
 
-def compute_target(tz_name: str):
+def compute_target(tz_name: str, now: datetime | None = None):
     tz = ZoneInfo(tz_name)
-    now = datetime.now(tz)
-    year = now.year
-    christmas = datetime(year, 12, 25, 0, 0, 0, tzinfo=tz)
-    if now >= christmas:
-        christmas = datetime(year + 1, 12, 25, 0, 0, 0, tzinfo=tz)
-    return now, christmas
+    now = now or datetime.now(tz)
+    # El 25 de diciembre completo sigue siendo "esta" Navidad (igual que en countdown.js):
+    # solo desde el 26 se cuenta hacia la del año siguiente.
+    year = now.year if (now.month, now.day) <= (12, 25) else now.year + 1
+    return now, datetime(year, 12, 25, 0, 0, 0, tzinfo=tz)
 
 @app.route("/")
 def index():
@@ -27,7 +26,7 @@ def index():
 
     now, target = compute_target(tz_name)
     delta = target - now
-    total_seconds = int(delta.total_seconds())
+    total_seconds = max(0, int(delta.total_seconds()))
     days = max(0, total_seconds // 86400)
     hours = (total_seconds % 86400) // 3600
     minutes = (total_seconds % 3600) // 60
@@ -44,6 +43,7 @@ def index():
         hours=hours,
         minutes=minutes,
         seconds=seconds,
+        is_christmas=now >= target,
     )
 
 if __name__ == "__main__":

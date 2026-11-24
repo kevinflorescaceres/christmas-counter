@@ -37,7 +37,7 @@
       <span class="pill" id="client-tz">Tu zona horaria: detectando…</span>
     </p>
 
-    <p class="celebrate" id="celebrate" hidden>🎁 ¡Feliz Navidad! 🎅</p>
+    <p class="celebrate" id="celebrate"{% if not is_christmas %} hidden{% endif %}>🎁 ¡Feliz Navidad! 🎅</p>
   </section>
 </main>
 {% endblock %}
