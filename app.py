@@ -16,6 +16,10 @@ def compute_target(tz_name: str, now: datetime | None = None):
     year = now.year if (now.month, now.day) <= (12, 25) else now.year + 1
     return now, datetime(year, 12, 25, 0, 0, 0, tzinfo=tz)
 
+@app.route("/up")
+def up():
+    return "ok"
+
 @app.route("/")
 def index():
     tz_name = DEFAULT_TZ
